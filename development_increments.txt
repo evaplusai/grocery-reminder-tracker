@@ -1,0 +1,317 @@
+# Grocery Reminder Tracker - Incremental Development Plan
+
+## Overview
+Breaking down the MVP into 12 small, testable increments. Each increment ends with a working feature that can be tested and committed.
+
+---
+
+## INCREMENT 1: Project Foundation
+**Goal**: Get basic NextJS project running with Tailwind
+**Time**: 1-2 hours
+**Testable State**: App loads in browser with styled homepage
+
+### Tasks:
+- Initialize NextJS 14 project with TypeScript and Tailwind
+- Set up basic folder structure following CLAUDE.md patterns
+- Create simple homepage with app title and basic styling
+- Configure Vercel deployment
+- Set up git repository
+
+### Test Criteria:
+- ✅ `npm run dev` starts development server
+- ✅ Homepage loads at localhost:3000
+- ✅ Tailwind CSS classes work correctly
+- ✅ TypeScript compiles without errors
+- ✅ Can deploy to Vercel successfully
+
+### Commit Message: 
+`feat: initialize NextJS project with TypeScript and Tailwind`
+
+---
+
+## INCREMENT 2: Store Navigation
+**Goal**: Basic UI with store tabs/navigation
+**Time**: 2-3 hours  
+**Testable State**: User can click between 4 store views
+
+### Tasks:
+- Create store navigation component with 4 stores
+- Add store icons/colors for visual distinction
+- Implement basic routing between stores
+- Style mobile-first responsive navigation
+- Add empty state for each store
+
+### Test Criteria:
+- ✅ Can click tabs to switch between ShopRite, Costco, Stop and Shop, CVS
+- ✅ Active store is visually highlighted
+- ✅ Mobile responsive navigation works
+- ✅ Each store shows empty state message
+
+### Commit Message:
+`feat: add multi-store navigation with responsive tabs`
+
+---
+
+## INCREMENT 3: Manual Item Management
+**Goal**: Add, edit, delete items manually (no voice yet)
+**Time**: 3-4 hours
+**Testable State**: Full CRUD operations work for grocery items
+
+### Tasks:
+- Create ItemCard component for displaying items
+- Add manual text input form for adding items
+- Implement edit/delete functionality
+- Add basic local state management
+- Style item cards with completion checkboxes
+
+### Test Criteria:
+- ✅ Can add new items to current store
+- ✅ Can edit existing item names
+- ✅ Can delete items
+- ✅ Can mark items as completed
+- ✅ Items persist during session (local state)
+
+### Commit Message:
+`feat: implement manual item CRUD operations with local state`
+
+---
+
+## INCREMENT 4: Database Setup
+**Goal**: Replace local state with Vercel Postgres
+**Time**: 2-3 hours
+**Testable State**: Items persist across browser refreshes
+
+### Tasks:
+- Set up Vercel Postgres database
+- Create database schema (users, stores, items tables)
+- Create API routes for item CRUD operations
+- Replace local state with API calls
+- Add basic error handling
+
+### Test Criteria:
+- ✅ Items persist after browser refresh
+- ✅ Different stores have separate item lists
+- ✅ CRUD operations work via API
+- ✅ Database queries are working correctly
+
+### Commit Message:
+`feat: integrate Vercel Postgres with API routes for persistence`
+
+---
+
+## INCREMENT 5: Basic Authentication
+**Goal**: Simple user accounts and session management
+**Time**: 3-4 hours
+**Testable State**: Users can register/login and see only their items
+
+### Tasks:
+- Add simple email/password registration
+- Implement login/logout functionality
+- Add JWT session management
+- Protect API routes with authentication
+- Add user context to items
+
+### Test Criteria:
+- ✅ Users can register new accounts
+- ✅ Users can login/logout
+- ✅ Items are user-specific (isolated data)
+- ✅ Protected routes require authentication
+
+### Commit Message:
+`feat: add user authentication with JWT sessions`
+
+---
+
+## INCREMENT 6: Voice Input Foundation
+**Goal**: Basic voice button that captures speech
+**Time**: 2-3 hours
+**Testable State**: Voice button records speech and shows transcript
+
+### Tasks:
+- Implement Web Speech API integration
+- Create VoiceButton component with recording states
+- Add microphone permissions handling
+- Display transcript of captured speech
+- Add basic error handling for voice failures
+
+### Test Criteria:
+- ✅ Voice button requests microphone permissions
+- ✅ Recording starts/stops with button click
+- ✅ Transcript appears after speaking
+- ✅ Error messages show when voice unavailable
+- ✅ Works on HTTPS (required for voice)
+
+### Commit Message:
+`feat: implement Web Speech API with voice transcript display`
+
+---
+
+## INCREMENT 7: OpenAI Integration Setup
+**Goal**: Send voice transcript to OpenAI and get structured response
+**Time**: 2-3 hours
+**Testable State**: Voice commands get parsed by AI into JSON structure
+
+### Tasks:
+- Set up OpenAI API integration
+- Create API route for voice parsing
+- Write basic prompt for parsing grocery commands
+- Add error handling for API failures
+- Display parsed results to user
+
+### Test Criteria:
+- ✅ Voice transcript sent to OpenAI successfully
+- ✅ Returns structured JSON with item and action
+- ✅ Handles API errors gracefully
+- ✅ Shows parsed results for user confirmation
+
+### Commit Message:
+`feat: integrate OpenAI API for voice command parsing`
+
+---
+
+## INCREMENT 8: Voice-to-List Integration
+**Goal**: Voice commands actually add items to lists
+**Time**: 2-3 hours
+**Testable State**: Can say "Add milk" and item appears in current store list
+
+### Tasks:
+- Connect parsed voice commands to item creation
+- Add confirmation step for voice-added items
+- Handle parsing errors and edge cases
+- Add fallback to manual input when voice fails
+- Implement basic success/error feedback
+
+### Test Criteria:
+- ✅ Saying "Add milk" creates item in current store
+- ✅ User can confirm or correct voice-parsed items
+- ✅ Handles unclear speech gracefully
+- ✅ Shows success feedback when item added
+
+### Commit Message:
+`feat: connect voice commands to item creation workflow`
+
+---
+
+## INCREMENT 9: AI Store Assignment
+**Goal**: AI suggests best store when not specified in voice command
+**Time**: 3-4 hours
+**Testable State**: "I need batteries" gets assigned to CVS automatically
+
+### Tasks:
+- Enhance OpenAI prompt to include store suggestions
+- Add store assignment logic to voice parsing
+- Allow user to override AI store suggestions
+- Add store characteristics to prompt context
+- Handle ambiguous store assignments
+
+### Test Criteria:
+- ✅ "I need milk" suggests ShopRite or Stop and Shop
+- ✅ "I need batteries" suggests CVS
+- ✅ "I need bulk rice" suggests Costco
+- ✅ User can change suggested store before adding
+- ✅ Store suggestions are generally accurate
+
+### Commit Message:
+`feat: implement AI-powered store assignment for items`
+
+---
+
+## INCREMENT 10: Shopping Mode
+**Goal**: Optimized UI for in-store shopping experience
+**Time**: 2-3 hours
+**Testable State**: Shopping mode has large checkboxes and clean layout
+
+### Tasks:
+- Create shopping mode toggle
+- Design large-touch-friendly interface
+- Add progress indicator for completion
+- Implement undo for accidental completions
+- Optimize for one-handed mobile use
+
+### Test Criteria:
+- ✅ Toggle switches to shopping mode successfully
+- ✅ Checkboxes are large and easy to tap
+- ✅ Shows completion progress
+- ✅ Can undo accidental completions
+- ✅ Interface is usable while shopping
+
+### Commit Message:
+`feat: add shopping mode with large touch targets`
+
+---
+
+## INCREMENT 11: Polish & Error Handling
+**Goal**: Robust error handling and improved UX
+**Time**: 3-4 hours
+**Testable State**: App handles all common error scenarios gracefully
+
+### Tasks:
+- Add comprehensive error boundaries
+- Improve loading states and feedback
+- Add input validation and sanitization
+- Implement retry logic for failed operations
+- Add basic analytics tracking
+
+### Test Criteria:
+- ✅ Network errors show helpful messages
+- ✅ Invalid inputs are handled gracefully
+- ✅ Loading states provide clear feedback
+- ✅ Failed operations can be retried
+- ✅ App doesn't crash on errors
+
+### Commit Message:
+`feat: add comprehensive error handling and UX improvements`
+
+---
+
+## INCREMENT 12: Deployment & Testing
+**Goal**: Production-ready deployment with basic testing
+**Time**: 2-3 hours
+**Testable State**: App works reliably in production
+
+### Tasks:
+- Set up production environment variables
+- Add basic unit tests for critical functions
+- Configure Vercel deployment pipeline
+- Add monitoring and error tracking
+- Perform end-to-end testing
+
+### Test Criteria:
+- ✅ App deploys to production successfully
+- ✅ All features work in production environment
+- ✅ Error tracking is configured
+- ✅ Critical functions have test coverage
+- ✅ Performance is acceptable on mobile
+
+### Commit Message:
+`feat: add production deployment and basic test coverage`
+
+---
+
+## Development Strategy
+
+### Each Increment Should:
+1. **Start with a working state** from previous increment
+2. **Add exactly one major feature** or capability
+3. **End in a testable state** with clear success criteria
+4. **Be committable** with meaningful commit message
+5. **Take 2-4 hours maximum** to complete
+
+### Testing Approach:
+- Manual testing after each increment
+- Basic unit tests added in INCREMENT 11
+- End-to-end testing before production
+- User acceptance testing on mobile devices
+
+### Risk Mitigation:
+- Each increment is small enough to debug easily
+- Working features aren't broken by new additions
+- Can ship any increment as a minimal viable version
+- Early increments can be demonstrated to stakeholders
+
+### Total Timeline:
+- **Fast pace**: 1-2 increments per day = 6-12 days
+- **Steady pace**: 1 increment per day = 12 days  
+- **Careful pace**: 2-3 increments per week = 4-6 weeks
+
+This incremental approach ensures constant progress with working software at every step, making debugging easier and providing early feedback opportunities.
