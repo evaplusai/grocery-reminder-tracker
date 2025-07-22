@@ -77,7 +77,13 @@ export async function login(credentials: LoginRequest): Promise<AuthResponse> {
     });
     const data = await response.json();
     setAuthToken(data.access_token);
-    return { user: data.user, token: data.access_token };
+    // Transform backend response to frontend format
+    const user = {
+      ...data.user,
+      createdAt: new Date(data.user.created_at),
+      updatedAt: data.user.updated_at ? new Date(data.user.updated_at) : new Date()
+    };
+    return { user, token: data.access_token };
   } catch (error) {
     console.error('Backend login failed, falling back to localStorage');
     const user = await storage.authenticateUser(credentials.email, credentials.password);
@@ -113,7 +119,13 @@ export async function register(userData: RegisterRequest): Promise<AuthResponse>
     });
     const data = await response.json();
     setAuthToken(data.access_token);
-    return { user: data.user, token: data.access_token };
+    // Transform backend response to frontend format
+    const user = {
+      ...data.user,
+      createdAt: new Date(data.user.created_at),
+      updatedAt: data.user.updated_at ? new Date(data.user.updated_at) : new Date()
+    };
+    return { user, token: data.access_token };
   } catch (error) {
     console.error('Backend register failed, falling back to localStorage');
     try {
