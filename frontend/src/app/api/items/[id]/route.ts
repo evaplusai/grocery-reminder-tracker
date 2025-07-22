@@ -3,19 +3,20 @@ import { updateItem, deleteItem } from '@/lib/db';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const body = await request.json();
     const { name, quantity, completed } = body;
     
+    const resolvedParams = await params;
     const updates: { name?: string; quantity?: string; completed?: boolean } = {};
     
     if (name !== undefined) updates.name = name;
     if (quantity !== undefined) updates.quantity = quantity;
     if (completed !== undefined) updates.completed = completed;
 
-    const item = await updateItem(params.id, updates);
+    const item = await updateItem(resolvedParams.id, updates);
     
     if (!item) {
       return NextResponse.json(
@@ -47,10 +48,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const item = await deleteItem(params.id);
+    const resolvedParams = await params;
+    const item = await deleteItem(resolvedParams.id);
     
     if (!item) {
       return NextResponse.json(
