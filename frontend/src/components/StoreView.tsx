@@ -12,6 +12,7 @@ interface StoreViewProps {
   onToggleComplete: (itemId: string) => void;
   onEditItem: (itemId: string, name: string, quantity?: string) => void;
   onDeleteItem: (itemId: string) => void;
+  loading?: boolean;
 }
 
 export default function StoreView({ 
@@ -20,7 +21,8 @@ export default function StoreView({
   onAddItem, 
   onToggleComplete, 
   onEditItem, 
-  onDeleteItem 
+  onDeleteItem,
+  loading = false
 }: StoreViewProps) {
   const pendingItems = items.filter(item => !item.completed);
   const completedItems = items.filter(item => item.completed);
@@ -48,8 +50,16 @@ export default function StoreView({
         <AddItemForm onAddItem={onAddItem} />
       </div>
 
+      {/* Loading state */}
+      {loading && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+          <p className="text-gray-500 dark:text-gray-400">Loading items...</p>
+        </div>
+      )}
+
       {/* Items list */}
-      {items.length > 0 ? (
+      {!loading && items.length > 0 ? (
         <div className="space-y-4">
           {/* Pending items */}
           {pendingItems.length > 0 && (
@@ -101,7 +111,7 @@ export default function StoreView({
             </div>
           )}
         </div>
-      ) : (
+      ) : !loading ? (
         /* Empty state */
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-8 text-center">
           <div className="text-4xl mb-4">📝</div>
@@ -112,7 +122,7 @@ export default function StoreView({
             Add items using the form above
           </p>
         </div>
-      )}
+      ) : null}
     </div>
   );
 }
